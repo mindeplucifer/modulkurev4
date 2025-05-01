@@ -1,0 +1,533 @@
+&lt;!DOCTYPE html>
+<html lang="id">
+    &lt;!-- Bootstrap JS --
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    &lt;!-- Firebase --
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    &lt;!-- Custom JS --
+    <script src="firebase-config.js"></script>
+    <script src="assets/js/admin.js"></script>    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ModulKu</title>
+    &lt;!-- Bootstrap CSS --
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    &lt;!-- Font Awesome --
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    &lt;!-- Custom CSS --
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    &lt;!-- Navbar --
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboardadmin.html">
+                <img src="assets/img/logo.png" alt="ModulKu Logo" height="30" class="d-inline-block align-text-top me-2">
+                ModulKu Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboardadmin.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#users">Pengguna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#modules">Modul</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-light me-3">Admin</span>
+                    <button class="btn btn-outline-light btn-sm" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt me-1"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    &lt;!-- Main Content --
+    <div class="container-fluid">
+        <div class="row">
+            &lt;!-- Sidebar --
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#users">
+                                <i class="fas fa-users me-2"></i>
+                                Pengguna
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#modules">
+                                <i class="fas fa-book me-2"></i>
+                                Modul
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#settings">
+                                <i class="fas fa-cog me-2"></i>
+                                Pengaturan
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            &lt;!-- Content --
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                &lt;!-- Dashboard Section --
+                <div id="dashboard" class="section active">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshBtn">
+                                    <i class="fas fa-sync-alt me-1"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    &lt;!-- Stats Cards --
+                    <div class="row">
+                        <div class="col-md-3 mb-4">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Total Pengguna</h6>
+                                            <h2 class="card-text" id="totalUsers">0</h2>
+                                        </div>
+                                        <i class="fas fa-users fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="card text-white bg-success">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Total Modul</h6>
+                                            <h2 class="card-text" id="totalModules">0</h2>
+                                        </div>
+                                        <i class="fas fa-book fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="card text-white bg-warning">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Pengguna Menunggu</h6>
+                                            <h2 class="card-text" id="pendingUsers">0</h2>
+                                        </div>
+                                        <i class="fas fa-user-clock fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="card text-white bg-info">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Modul Menunggu</h6>
+                                            <h2 class="card-text" id="pendingModules">0</h2>
+                                        </div>
+                                        <i class="fas fa-file-upload fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    &lt;!-- Recent Activity --
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Aktivitas Terbaru</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush" id="recentActivity">
+                                <li class="list-group-item text-center">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span class="ms-2">Memuat aktivitas...</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                &lt;!-- Users Section --
+                <div id="users" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Manajemen Pengguna</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshUsersBtn">
+                                    <i class="fas fa-sync-alt me-1"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    &lt;!-- Users Tabs --
+                    <ul class="nav nav-tabs" id="usersTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pending-users-tab" data-bs-toggle="tab" data-bs-target="#pending-users" type="button" role="tab" aria-controls="pending-users" aria-selected="true">
+                                Menunggu Persetujuan <span class="badge bg-warning text-dark ms-1" id="pendingUsersCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="approved-users-tab" data-bs-toggle="tab" data-bs-target="#approved-users" type="button" role="tab" aria-controls="approved-users" aria-selected="false">
+                                Disetujui
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="all-users-tab" data-bs-toggle="tab" data-bs-target="#all-users" type="button" role="tab" aria-controls="all-users" aria-selected="false">
+                                Semua Pengguna
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="usersTabsContent">
+                        <div class="tab-pane fade show active" id="pending-users" role="tabpanel" aria-labelledby="pending-users-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Email</th>
+                                                    <th>Sekolah/Institusi</th>
+                                                    <th>Tanggal Daftar</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pendingUsersTable">
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="approved-users" role="tabpanel" aria-labelledby="approved-users-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Email</th>
+                                                    <th>Sekolah/Institusi</th>
+                                                    <th>Tanggal Disetujui</th>
+                                                    <th>Status Upload</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="approvedUsersTable">
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="all-users" role="tabpanel" aria-labelledby="all-users-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Email</th>
+                                                    <th>Sekolah/Institusi</th>
+                                                    <th>Status</th>
+                                                    <th>Tanggal Daftar</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="allUsersTable">
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                &lt;!-- Modules Section --
+                <div id="modules" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Manajemen Modul</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshModulesBtn">
+                                    <i class="fas fa-sync-alt me-1"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    &lt;!-- Modules Tabs --
+                    <ul class="nav nav-tabs" id="modulesTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pending-modules-tab" data-bs-toggle="tab" data-bs-target="#pending-modules" type="button" role="tab" aria-controls="pending-modules" aria-selected="true">
+                                Menunggu Persetujuan <span class="badge bg-warning text-dark ms-1" id="pendingModulesCount">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="approved-modules-tab" data-bs-toggle="tab" data-bs-target="#approved-modules" type="button" role="tab" aria-controls="approved-modules" aria-selected="false">
+                                Disetujui
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="all-modules-tab" data-bs-toggle="tab" data-bs-target="#all-modules" type="button" role="tab" aria-controls="all-modules" aria-selected="false">
+                                Semua Modul
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="modulesTabsContent">
+                        <div class="tab-pane fade show active" id="pending-modules" role="tabpanel" aria-labelledby="pending-modules-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Judul</th>
+                                                    <th>Kategori</th>
+                                                    <th>Pengunggah</th>
+                                                    <th>Tanggal Upload</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pendingModulesTable">
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="approved-modules" role="tabpanel" aria-labelledby="approved-modules-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Judul</th>
+                                                    <th>Kategori</th>
+                                                    <th>Pengunggah</th>
+                                                    <th>Tanggal Disetujui</th>
+                                                    <th>Jumlah Download</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="approvedModulesTable">
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="all-modules" role="tabpanel" aria-labelledby="all-modules-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Judul</th>
+                                                    <th>Kategori</th>
+                                                    <th>Pengunggah</th>
+                                                    <th>Status</th>
+                                                    <th>Tanggal Upload</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="allModulesTable">
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="ms-2">Memuat data...</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                &lt;!-- Settings Section --
+                <div id="settings" class="section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Pengaturan</h1>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pengaturan Admin</h5>
+                            <form id="settingsForm">
+                                <div class="mb-3">
+                                    <label for="adminEmail" class="form-label">Email Admin</label>
+                                    <input type="email" class="form-control" id="adminEmail" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adminName" class="form-label">Nama Admin</label>
+                                    <input type="text" class="form-control" id="adminName">
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="autoApproveUsers">
+                                    <label class="form-check-label" for="autoApproveUsers">Otomatis setujui pengguna baru</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    &lt;!-- Module Preview Modal --
+    <div class="modal fade" id="modulePreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modulePreviewTitle">Preview Modul</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <iframe id="modulePreviewFrame" width="100%" height="600" frameborder="0"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-success" id="approveModuleBtn">
+                        <i class="fas fa-check me-1"></i> Setujui
+                    </button>
+                    <button type="button" class="btn btn-danger" id="rejectModuleBtn">
+                        <i class="fas fa-times me-1"></i> Tolak
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    &lt;!-- User Details Modal --
+    <div class="modal fade" id="userDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userDetailsTitle">Detail Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img id="userDetailsPhoto" src="assets/img/user-placeholder.png" alt="User" class="rounded-circle" width="100" height="100">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="userDetailsName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="userDetailsEmail" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sekolah/Institusi</label>
+                        <input type="text" class="form-control" id="userDetailsSchool" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jurusan</label>
+                        <input type="text" class="form-control" id="userDetailsMajor" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Peran</label>
+                        <input type="text" class="form-control" id="userDetailsRole" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Daftar</label>
+                        <input type="text" class="form-control" id="userDetailsRegisteredAt" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input type="text" class="form-control" id="userDetailsStatus" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer" id="userDetailsFooter">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

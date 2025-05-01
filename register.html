@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi - ModulKu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/img/logo.png" alt="ModulKu Logo" height="30" class="d-inline-block align-text-top me-2">
+                ModulKu
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Beranda</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2>Lengkapi Profil Anda</h2>
+                                <p class="text-muted">Silakan lengkapi data diri Anda untuk melanjutkan</p>
+                            </div>
+                            
+                            <form id="registrationForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="fullName" class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="school" class="form-label">Sekolah/Institusi</label>
+                                        <input type="text" class="form-control" id="school" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="major" class="form-label">Jurusan/Program Studi</label>
+                                        <input type="text" class="form-control" id="major" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Peran</label>
+                                    <select class="form-select" id="role" required>
+                                        <option value="" selected disabled>Pilih peran Anda</option>
+                                        <option value="student">Siswa/Mahasiswa</option>
+                                        <option value="teacher">Guru/Dosen</option>
+                                        <option value="other">Lainnya</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bio" class="form-label">Tentang Anda (Opsional)</label>
+                                    <textarea class="form-control" id="bio" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                                    <label class="form-check-label" for="termsCheck">
+                                        Saya menyetujui <a href="#">Syarat dan Ketentuan</a> serta <a href="#">Kebijakan Privasi</a>
+                                    </label>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Akun Anda akan direview oleh admin sebelum dapat mengupload modul. Namun, Anda tetap dapat mendownload modul yang tersedia.
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">Daftar</button>
+                                    <button type="button" id="logoutBtn" class="btn btn-outline-secondary">Keluar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-light mt-2">Memproses...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ModulKu</h5>
+                    <p>Platform berbagi modul pembelajaran gratis</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Tautan</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">Beranda</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Kontak</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="mailto:info@modulku.com" class="text-white">info@modulku.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2023 ModulKu. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="firebase-config.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in, fill email field
+                    document.getElementById('email').value = user.email;
+                    
+                    // If user has a display name, fill name field
+                    if (user.displayName) {
+                        document.getElementById('fullName').value = user.displayName;
+                    }
+                } else {
+                    // No user is signed in, redirect to login
+                    window.location.href = 'login.html';
+                }
+            });
+            
+            // Setup registration form submission
+            document.getElementById('registrationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                showLoading();
+                
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    hideLoading();
+                    alert('Anda harus login terlebih dahulu.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: document.getElementById('fullName').value,
+                    school: document.getElementById('school').value,
+                    major: document.getElementById('major').value,
+                    role: document.getElementById('role').value,
+                    bio: document.getElementById('bio').value,
+                    photoURL: user.photoURL || '',
+                    isApproved: false,
+                    canUpload: false,
+                    registeredAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                // Save user data to Firestore
+                firebase.firestore().collection('users').doc(user.uid).set(userData)
+                    .then(() => {
+                        hideLoading();
+                        alert('Registrasi berhasil! Anda akan diarahkan ke halaman utama.');
+                        window.location.href = 'loginsuccess.html';
+                    })
+                    .catch((error) => {
+                        hideLoading();
+                        console.error("Error saving user data:", error);
+                        alert('Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
+                    });
+            });
+            
+            // Setup logout button
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                firebase.auth().signOut()
+                    .then(() => {
+                        window.location.href = 'index.html';
+                    })
+                    .catch((error) => {
+                        console.error("Error signing out:", error);
+                    });
+            });
+        });
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('d-none');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('d-none');
+        }
+    </script>
+</body>
+</html>
